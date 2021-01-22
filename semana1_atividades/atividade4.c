@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<locale.h>
 
-#define SIZE 5
+#define SIZE 1000
 
 int main(void)
 {
