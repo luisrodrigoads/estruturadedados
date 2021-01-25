@@ -3,13 +3,17 @@
 #include<string.h>
 #include<locale.h>
 
+/*
+Correct number of words according teacher is 61964
+*/
+
 #define SIZE 10000
 
 int main(void){
 
     char line[SIZE];
     char * last;
-    int numberOfWords=1;
+    int numberOfWords=0;
 
     FILE *file;
 
@@ -22,8 +26,8 @@ int main(void){
             fgets(line, SIZE, file);
             last = strtok(line, " ");
                 while(last != NULL){
-                    last = strtok(NULL, " ");
                     numberOfWords++;
+                    last = strtok(NULL, " ");  
                 }
             
         }
