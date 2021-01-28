@@ -1,0 +1,33 @@
+//////
+Exercise 1 (Atividade 1)
+
+Make a program that reads a name any and store in a file named “data.txt”.
+
+//////
+Exercise 2 (Atividade 2)
+
+Make a program that reads any name, a any age and stores it in a file
+called "data2.txt".
+
+//////
+Exercise 3 (Atividade 3)
+
+Make a program that reads a file and shows its contents on the screen.
+
+//////
+Exercise 4 (Atividade 4)
+
+Make a program that creates an array of integers with 1000 positions. 
+The program should read the values ​​while it is informed positive values. 
+If a negative value informed, you should store the values ​​in a archive.
+When running the program again, it should read the values ​​and display the
+previously entered values ​​on the screen.
+
+//////
+Challenge (desafio)
+
+Make a program that counts the number of words in the file.
+
+
+
+
