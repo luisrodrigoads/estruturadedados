@@ -3,13 +3,24 @@
 
 /* RESPOSTAS 
 
-   1)valor de b[2] é 2, valor de &b[2] é 0x55b35f2ec408, vale ressaltar que
+   1)valor de b[2] é 2, valor de &b[2] é 0x560ca1bf8408, vale ressaltar que
    o valor de &b[2] muda a cada execução do programa, sendo este valor obtido
    em das execuções.
 
    2) A diferença é que enquanto o b[2] refere-se ao valor contido na variável,
    o &b[2] faz referência que é dada pelo operador & ao endereço da célula na 
    memória.
+
+   RESULTADO DA IMPRESSÃO APÓS A EXECUÇÃO DO PROGRAMA
+
+   valor 0 - endereco 0x560ca1bf8260 
+   valor 0 - endereco 0x560ca1bf8264 
+   valor 0 - endereco 0x560ca1bf8268 
+   valor 0 - endereco 0x560ca1bf8400 
+   valor 1 - endereco 0x560ca1bf8404 
+   valor 2 - endereco 0x560ca1bf8408 
+   --> a 4
+
 */
 
 int main()

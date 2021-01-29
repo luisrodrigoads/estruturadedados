@@ -1,0 +1,69 @@
+
+//ESTRUTURAS//
+
+
+//->Código da página 15
+/*
+#include <stdio.h>
+#include <string.h>
+typedef struct Cpessoa
+{
+char nome[20];
+int idade;
+} ;
+int main(void)
+{
+Cpessoa aluno[4];
+strcpy(aluno[0].nome, “Homer");
+aluno[0].idade = 22;
+strcpy(aluno[1].nome, “Marge");
+aluno[1].idade = 22;
+strcpy(aluno[2].nome, “Lisa");
+aluno[2].idade = 23;
+strcpy(aluno[3].nome, “Bart");
+aluno[3].idade = 24;
+for (int i = 0; i<4 ; i++)
+{
+printf("%s - %d \n", aluno[i].nome, aluno[i].idade);
+}
+getchar();
+return 1;
+}
+*/
+
+//->Código da página 16
+/*
+#include <stdio.h>
+#include <string.h>
+typedef struct Cpessoa
+{
+char nome[20];
+int idade;
+} ;
+int main(void)
+{
+Cpessoa aluno;
+Cpessoa *paluno;
+paluno = &aluno;
+strcpy((*paluno).nome, “Homer");
+(*paluno).idade = 22;
+printf("%s - %d \n", (*paluno).nome, (*paluno).idade);
+getchar();
+return 1;
+}
+*/
+
+/*
+A principal diferença relacionada a struct entre os códigos da página 15 e 16,
+está que no primeiro código foi implementado um array que possui como tipo de dado 
+a struct "Cpessoa" no qual foi alocado quatro células de memória, tendo cada delas o
+tamanho da struct.
+
+Já no segundo código foi criada duas variáveis do tipo Cpessoa(struct), uma "básica" e 
+outra usada para armazenar um ponteiro que aponta para o endereço da primeira váriavel,
+desse modo embora no código seja usada a variável que armazena ponteiro *paluno para inserir valores,
+na  verdade pela questão do apontamento de endereço, na verdade os valores estão indo para a variável aluno.
+
+Ou seja, a grande diferença está na quantidade de memória alocada, e em uma trabalhar com
+ponteiros e a outra não.
+*/

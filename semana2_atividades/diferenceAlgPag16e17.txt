@@ -1,0 +1,71 @@
+//ESTRUTURAS//
+
+//->Código da página 16
+/*
+#include <stdio.h>
+#include <string.h>
+typedef struct Cpessoa
+{
+char nome[20];
+int idade;
+} ;
+int main(void)
+{
+Cpessoa aluno;
+Cpessoa *paluno;
+paluno = &aluno;
+strcpy((*paluno).nome, “Homer");
+(*paluno).idade = 22;
+printf("%s - %d \n", (*paluno).nome, (*paluno).idade);
+getchar();
+return 1;
+}
+*/
+
+//->Código da página 17
+/*
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+struct Cpessoa
+{ char nome[20];
+int idade;} ;
+int main(void)
+{
+Cpessoa aluno;
+Cpessoa *paluno;
+paluno = &aluno;
+paluno = (struct Cpessoa *) malloc(4*sizeof(struct Cpessoa));
+strcpy((*paluno).nome, "Homer");
+(*paluno).idade = 22;
+strcpy((*(paluno+1)).nome, "Marge");
+(*(paluno+1)).idade = 22;
+strcpy((*(paluno+2)).nome, "Lisa");
+(*(paluno+2)).idade = 23;
+strcpy((*(paluno+3)).nome, "Bart");
+(*(paluno+3)).idade = 24;
+for (int i = 0; i<4 ; i++)
+{
+printf("%s - %d \n", (*(paluno+i)).nome, (*(paluno+i)).idade);
+}
+getchar();
+return 1;
+}
+*/
+
+/*
+Já no segundo código foi criada duas variáveis do tipo Cpessoa(struct), uma "básica" e 
+outra usada para armazenar um ponteiro que aponta para o endereço da primeira váriavel,
+desse modo embora no código seja usada a variável que armazena ponteiro *paluno para inserir valores,
+na  verdade pela questão do apontamento de endereço, na verdade os valores estão indo para a variável alun
+
+Sobre as diferenças dos códigos relacionadas a struct, uma delas é que no primeiro código
+é usado o "typedef" e no segundo não,sendo que ele por definição cria um sinônimo ou atribui um novo nome para
+um determinado tipo, dessa forma simplificando a declaração de variáveis desse determinado tipo.
+A outra diferença está que embora nos dois códigos seja usado ponteiros para referenciar uma célula de memória por exemplo, 
+no primeiro código é alocado um bloco de memória sem alguma função específica, só quando é inserido algum valor nessa memória, 
+no segundo já é usado uma função (malloc) para alocar determinada quantidade de memória, dividindo ela em blocos do tamanho de um tipo 
+de dado definido pelo programador, dessa forma, podendo manipular ele, de maneira um pouco semelhante em alguns pontos como na 
+exibição dos valores por exemplo, como um array. 
+
+*/
