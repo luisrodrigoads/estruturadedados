@@ -26,7 +26,7 @@ void leituraInicialArquivo();
 void adicionaNovoValor();
 void salvarDadosNoArquivo();
 
-int main(void){
+main(void){
 
     int opcao;
     
@@ -64,7 +64,6 @@ int main(void){
 
     }while(opcao != 4);
 
-    return 0;
 }
 
 void imprimeMenu(){
@@ -92,12 +91,12 @@ void procuraAluno(){
 	printf("\nDigite o nome do aluno: ");
 	scanf("%s",nomeAluno);
 	
-	for(int x = 0;x < (tam); x++){
-		if((strcmp(aluno->nome,nomeAluno) == 0) && (encontrou < 1)){
-			printf("\n\tnome: %s\tMatricula: %d\tN1: %.2f\tN2: %.2f\tN3: %.2f\tN4: %.2f\tmedia: %.2f",aluno->nome,aluno->matricula,aluno->N1,aluno->N2,aluno->N3,aluno->N4,aluno->media);
+	for(int x = 0;x < tam; x++){
+		if((strcmp(aluno[x].nome,nomeAluno) == 0) && (encontrou < 1)){
+			printf("\n\tnome: %s\tMatricula: %d\tN1: %.2f\tN2: %.2f\tN3: %.2f\tN4: %.2f\tmedia: %.2f",aluno[x].nome,aluno[x].matricula,aluno[x].N1,aluno[x].N2,aluno[x].N3,aluno[x].N4,aluno[x].media);
 			encontrou++;
 		}
-		*(aluno)++;
+		
 	}
 	
 	if(encontrou == 0){
@@ -117,7 +116,7 @@ void leituraInicialArquivo(){
 		}
 		fclose(file);
 	}
-	
+	fclose(file);
 }
 
 void adicionaNovoValor(){
@@ -148,11 +147,8 @@ void salvarDadosNoArquivo(){
 	
 	file = fopen("arquivo.txt","w+");
 	
-	for(int i = 0;i < (tam); i++){
-	
-		fprintf(file,"%s %d %f %f %f %f %f\n",aluno->nome,aluno->matricula,aluno->N1,aluno->N2,aluno->N3,aluno->N4,aluno->media);
-			
-		*(aluno)++;
+	for(int i = 0;i < tam; i++){
+		fprintf(file,"%s %d %f %f %f %f %f\n",aluno[i].nome,aluno[i].matricula,aluno[i].N1,aluno[i].N2,aluno[i].N3,aluno[i].N4,aluno[i].media);			
 	}
 	fclose(file);
 	printf("\nDados salvos no arquivo");
