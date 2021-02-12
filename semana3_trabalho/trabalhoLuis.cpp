@@ -115,8 +115,8 @@ void leituraInicialArquivo(){
 			tam++;
 		}
 		fclose(file);
+		tam--;
 	}
-	fclose(file);
 }
 
 void adicionaNovoValor(){
@@ -153,3 +153,5 @@ void salvarDadosNoArquivo(){
 	fclose(file);
 	printf("\nDados salvos no arquivo");
 }
+
+
