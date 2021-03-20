@@ -20,10 +20,13 @@ int pilha_vazia (Pilha* p);//Verfica de a pilha esta vazia
 void push (Pilha* p, char c[30]);//Função insere (push)
 char* pop( Pilha* p);//Função Para Remover (pop)
 void pilha_libera (Pilha* p);//Libera a pilha
+
 void imprime_pilha(Pilha* p);
 void imprime_menu();
 void limpa_tela();
 
+Pilha* leitura_inicial_arquivo(Pilha* p);//carrega os dados do arquivo na pilha
+void salva_dados_no_arquivo(Pilha* p);//salva os novos dados no arquivo
 
 main(){
 	
@@ -33,17 +36,26 @@ main(){
 	
 	printf("inicio do Programa de Pilhas\n");
 
-	Pilha * duracel = pilha_cria();
-	char tmp[30]; 
+	Pilha * duracel;
+	duracel = leitura_inicial_arquivo(duracel);
 	
-	//ver manual de montagem / cadastrar novo processo de desmontagem / sair
-	
+	Pilha * duracel_nova;
+	duracel_nova = pilha_cria();
+	int vazia=1;
+	char tmp[30];
+		
 	do{
 		imprime_menu();
 		scanf("%d",&opcao);
 		switch(opcao){
 			case 1:
-				imprime_pilha(duracel);
+				limpa_tela();
+				if(!pilha_vazia(duracel_nova)){
+					imprime_pilha(duracel_nova);
+				}else{
+					imprime_pilha(duracel);
+				}
+				
 				printf("\n-----------------------------");
 				printf("\nPara voltar digite [s]: ");
 				scanf("%s",tmp);
@@ -51,25 +63,86 @@ main(){
 					break;
 				
 			case 2:
-				limpa_tela();
-				printf("\nCaso queira voltar digite [s]\n");
-				printf("-----------------------------");
-				printf("\nDigite o nome da peça a retirar: ");
-				scanf("%s",tmp);
-				if(strcmp(tmp,"s") == 0){
-					break;
-				}else
-					push(duracel,tmp);
 				
+				
+				if(!pilha_vazia(duracel_nova))
+					vazia = 0;
+					
+				do{
+					limpa_tela();
+					fflush(stdin);
+					printf("\nCaso queira voltar ao menu principal e salvar dados digite [s]\n");
+					printf("-----------------------------");
+					printf("\nDigite o nome da peça a retirar: ");
+					scanf("%[^\n]",tmp);
+					
+					if(strcmp(tmp,"s") != 0){
+						if(vazia == 0){
+							pilha_libera(duracel_nova);
+							duracel_nova = pilha_cria();
+							vazia = 1;
+						}
+						push(duracel_nova,tmp);
+					}
+						
+							
+				}while(strcmp(tmp,"s") != 0);
+				
+				if(pilha_vazia(duracel_nova)){
+					break;
+				}else{
+					salva_dados_no_arquivo(duracel_nova);
+					break;
+				}
+
 			default:
 				break;	
 		}
 	}while(opcao != 3);
 	
 	pilha_libera(duracel);
+	pilha_libera(duracel_nova);
 		
 	system("pause");
           
+}
+
+Pilha* leitura_inicial_arquivo(Pilha* p){
+	
+	char linha[1024];
+	char * ultima;
+	FILE *file;
+	
+	p = pilha_cria();
+	
+	if((file = fopen("arquivo.txt","r")) != NULL){
+		while(!feof(file)){
+			fgets(linha,1024,file);
+			ultima = strtok(linha,"\\");
+			while(ultima != NULL){
+				push(p,ultima);
+				ultima = strtok(NULL,"\\");
+			}
+		}
+		fclose(file);
+	}
+	
+	return p;	
+}
+
+void salva_dados_no_arquivo(Pilha* p){
+	
+	FILE *file;
+	
+	file = fopen("arquivo.txt","w+");
+	
+	Lista * q;
+	for(q = p->prim;q != NULL;q = q->prox){
+		fprintf(file,"%s \\",q->info);
+	}
+	fclose(file);
+	printf("\nSalvando no arquivo e substituindo por novo manual");
+	
 }
 
 //Cria a pilha vazia 
