@@ -53,7 +53,7 @@ float retira (Fila* f){
 		printf("Fila vazia.\n");
 		exit(1);
 	}
-	v- f->ini->info;
+	v= f->ini->info;
 	f->ini = ret_ini(f->ini);
 	if(f->ini == NULL) //fila ficou vazia?
 		f->fim = NULL;
