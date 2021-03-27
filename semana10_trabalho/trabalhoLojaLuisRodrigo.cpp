@@ -56,6 +56,7 @@ ElementoDaFila* retira_no_inicio(ElementoDaFila* inicial);
 void insere_na_fila(Clientes* cf,char novoNome[TAM_STRING_MEDIO],char novoCPF[TAM_STRING_PEQUENO],char novoTelefone[TAM_STRING_PEQUENO]);
 void retira_da_fila(Clientes* cf);
 void libera_fila(Clientes* cf);
+void organiza_fila(Clientes* cf);
 void imprime_fila(Clientes* cf);
 
 
@@ -72,6 +73,7 @@ Clientes* leitura_inicial_arquivo_clientes(Clientes* cf);
 Carro* leitura_inicial_arquivo_carros(Carro* c);
 void salva_clientes_no_arquivo(Clientes* cf);
 void salva_carros_no_arquivo(Carro* c);
+void gerar_arquivo_ordenado_clientes(Clientes* cf);
 
 void imprime_menu_principal();
 void limpa_tela();
@@ -141,19 +143,22 @@ main(){
 				break;
 			case 5:		//Entregar carro/cliente
 				limpa_tela();
-				//printf("\nO carro do modelo %s foi entregue ao cliente %s\n",retira_da_pilha(listaDeCarros),retira_da_fila(filaDeClientes));
 				if((filaDeClientes->inicial == NULL) || (listaDeCarros->primeiro == NULL)){
 					printf("\n-----Não foi possível realizar a entrega!-----");
 					printf("\nCarro ou cliente não disponíveis\n\n");
 				}else{
 					printf("\n-----Dados da entrega-----\n\n");
 					retira_da_fila(filaDeClientes);
-					retira_da_pilha(listaDeCarros);	
+					retira_da_pilha(listaDeCarros);
+					salva_clientes_no_arquivo(filaDeClientes);
+					salva_carros_no_arquivo(listaDeCarros);	
 				}
 				system("pause");
 				break;
 			case 6:		//Gerar arquivo de clientes ordenado(nome)
 				limpa_tela();
+				organiza_fila(filaDeClientes);
+				system("pause");
 				break;
 			default:	//Sair
 				break;
@@ -231,7 +236,7 @@ void salva_clientes_no_arquivo(Clientes* cf){
 		fprintf(fileClientes,"%s|%s|%s|\n",a->Nome,a->CPF,a->Telefone);
 	}
 	fclose(fileClientes);
-	printf("\nSalvando dados no arquivo clientes.txt ...");
+	printf("\nSalvando dados no arquivo clientes.txt ...\n");
 		
 }
 
@@ -288,6 +293,72 @@ void libera_fila(Clientes* cf){
 	free(cf);
 }
 
+void organiza_fila(Clientes* cf){
+	
+	char auxNome[TAM_STRING_MEDIO];
+	char auxCpf[TAM_STRING_PEQUENO];
+	char auxTelefone[TAM_STRING_PEQUENO];
+	
+	ElementoDaFila* f;
+	Clientes* filaAuxiliar;
+	filaAuxiliar = criaFila();
+	
+	if(cf->inicial != NULL){
+		for(f = cf->inicial; f != NULL; f = f->proximo){
+			insere_na_fila(filaAuxiliar,f->Nome,f->CPF,f->Telefone);
+		}	
+	}	
+	
+	if(filaAuxiliar->inicial != NULL){
+		
+		ElementoDaFila* a;
+		ElementoDaFila* b;
+		a = filaAuxiliar->inicial;
+		b = filaAuxiliar->inicial;
+		
+		while(b != NULL){
+			
+			while(a->proximo != NULL){
+				if(strcmp(strupr(a->Nome),strupr(a->proximo->Nome)) > 0){
+					
+					strcpy(auxNome,a->Nome);
+					strcpy(a->Nome,a->proximo->Nome);
+					strcpy(a->proximo->Nome,auxNome);
+					
+					strcpy(auxCpf,a->CPF);
+					strcpy(a->CPF,a->proximo->CPF);
+					strcpy(a->proximo->CPF,auxCpf);
+					
+					strcpy(auxTelefone,a->Telefone);
+					strcpy(a->Telefone,a->proximo->Telefone);
+					strcpy(a->proximo->Telefone,auxTelefone);
+				}
+				
+				a = a->proximo;
+			}
+			
+			b = b->proximo;
+		}
+		
+		gerar_arquivo_ordenado_clientes(filaAuxiliar);
+		
+	}
+}
+
+void gerar_arquivo_ordenado_clientes(Clientes* cf){
+	
+	FILE *fileClientes;
+	
+	fileClientes = fopen("clientesOrdenadosPorNome.txt","w+");
+	
+	ElementoDaFila * a;
+	for(a = cf->inicial; a != NULL; a = a->proximo){
+		fprintf(fileClientes,"%s|%s|%s|\n",a->Nome,a->CPF,a->Telefone);
+	}
+	fclose(fileClientes);
+	printf("\nGerando arquivo de clientes ordenado ...\n");	
+}
+
 void imprime_fila(Clientes* cf){
 	ElementoDaFila* a;
 	printf("\n-----Fila de clientes-----\n\n");
@@ -320,10 +391,13 @@ Carro* leitura_inicial_arquivo_carros(Carro* c){
 	char linha[TAM_LINHA_ARQUIVO];
 	char * ultimaString;
 	FILE *fileCarros;
-
+	
+	Carro* pilhaNova;
+	pilhaNova = criaPilha();
 	c = criaPilha();
 	
 	if((fileCarros = fopen("carros.txt","r")) != NULL){
+		
 		while(!feof(fileCarros)){
 			
 			fgets(linha,TAM_LINHA_ARQUIVO,fileCarros);
@@ -346,10 +420,24 @@ Carro* leitura_inicial_arquivo_carros(Carro* c){
 			}
 			
 		}
+		
+		//inverte pilha caso tenha dados no arquivo
+		if(!verificaPilhaVazia(c)){
+		
+			while(!verificaPilhaVazia(c)){
+				insere_na_pilha(pilhaNova,c->primeiro->Modelo,c->primeiro->NumeroDoChassi,c->primeiro->Cor);
+				retira_da_pilha(c);
+			}
+		
+		}
+		
 		fclose(fileCarros);
 	}
 	
-	return c;
+	if(!verificaPilhaVazia(pilhaNova))
+		return pilhaNova;
+	else
+		return c;
 }
 
 void salva_carros_no_arquivo(Carro* c){
@@ -362,7 +450,7 @@ void salva_carros_no_arquivo(Carro* c){
 		fprintf(fileCarros,"%s|%s|%s|\n",l->Modelo,l->NumeroDoChassi,l->Cor);
 	}
 	fclose(fileCarros);
-	printf("\nSalvando dados no arquivo carros.txt ...");
+	printf("\nSalvando dados no arquivo carros.txt ...\n");
 }
 
 void insere_na_pilha(Carro* c,char novoModelo[TAM_STRING_MEDIO],char novoNumeroDoChassi[TAM_STRING_GRANDE],char novaCor[TAM_STRING_PEQUENO]){
