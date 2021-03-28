@@ -8,9 +8,6 @@
 #define TAM_STRING_PEQUENO 20
 #define TAM_LINHA_ARQUIVO 130
 
-//carro pilha
-//cliente fila
-
 /*
 ------ Definição das estruturas de dados -------
 */
@@ -261,7 +258,7 @@ ElementoDaFila* retira_no_inicio(ElementoDaFila* inicial){
 	return elemento;
 }
 
-//remove elemento da fila de clientes
+//remove um cliente da fila
 void retira_da_fila(Clientes* cf){
 	
 	char nome[TAM_STRING_MEDIO];
@@ -277,12 +274,14 @@ void retira_da_fila(Clientes* cf){
 	printf("Cliente: %s",nome);
 }
 
+//registra novo cliente
 void insere_na_fila(Clientes* cf,char novoNome[TAM_STRING_MEDIO],char novoCPF[TAM_STRING_PEQUENO],char novoTelefone[TAM_STRING_PEQUENO]){
 	cf->final = insere_no_fim(cf->final,novoNome,novoCPF,novoTelefone);
 	if(cf->inicial == NULL) //verifica se a fila ficou vazia
 		cf->inicial = cf->final;
 }
 
+//libera a memória alocada para manipular a fila de clientes
 void libera_fila(Clientes* cf){
 	ElementoDaFila* a = cf->inicial;
 	while(a != NULL){
@@ -293,6 +292,7 @@ void libera_fila(Clientes* cf){
 	free(cf);
 }
 
+//organiza a fila de clientes por nome
 void organiza_fila(Clientes* cf){
 	
 	char auxNome[TAM_STRING_MEDIO];
@@ -304,8 +304,10 @@ void organiza_fila(Clientes* cf){
 	filaAuxiliar = criaFila();
 	
 	if(cf->inicial != NULL){
-		for(f = cf->inicial; f != NULL; f = f->proximo){
+		f = cf->inicial;
+		while(f != NULL){	
 			insere_na_fila(filaAuxiliar,f->Nome,f->CPF,f->Telefone);
+			f = f->proximo;
 		}	
 	}	
 	
@@ -341,10 +343,10 @@ void organiza_fila(Clientes* cf){
 		}
 		
 		gerar_arquivo_ordenado_clientes(filaAuxiliar);
-		
 	}
 }
 
+//grava num arquivo a lista de clientes ordenada por nome
 void gerar_arquivo_ordenado_clientes(Clientes* cf){
 	
 	FILE *fileClientes;
@@ -357,8 +359,10 @@ void gerar_arquivo_ordenado_clientes(Clientes* cf){
 	}
 	fclose(fileClientes);
 	printf("\nGerando arquivo de clientes ordenado ...\n");	
+	libera_fila(cf);
 }
 
+//mostra a lista de clientes
 void imprime_fila(Clientes* cf){
 	ElementoDaFila* a;
 	printf("\n-----Fila de clientes-----\n\n");
@@ -372,16 +376,19 @@ void imprime_fila(Clientes* cf){
 	}	
 }
 
+//verifica se a pilha está vazia
 int verificaPilhaVazia(Carro* c){
 	return (c->primeiro == NULL);
 }
 
+//cria uma pilha
 Carro* criaPilha(void){
 	Carro* c = (Carro*) malloc(sizeof(Carro));
 	c->primeiro = NULL;
 	return c;
 }
 
+//leitura inicial do arquivo dos carros
 Carro* leitura_inicial_arquivo_carros(Carro* c){
 	
 	char modelo[TAM_STRING_MEDIO];
@@ -421,7 +428,6 @@ Carro* leitura_inicial_arquivo_carros(Carro* c){
 			
 		}
 		
-		//inverte pilha caso tenha dados no arquivo
 		if(!verificaPilhaVazia(c)){
 		
 			while(!verificaPilhaVazia(c)){
@@ -440,6 +446,7 @@ Carro* leitura_inicial_arquivo_carros(Carro* c){
 		return c;
 }
 
+//grava a lista de carros atualizada no arquivo
 void salva_carros_no_arquivo(Carro* c){
 	FILE *fileCarros;
 	
@@ -453,6 +460,7 @@ void salva_carros_no_arquivo(Carro* c){
 	printf("\nSalvando dados no arquivo carros.txt ...\n");
 }
 
+//registra um novo carro no estoque
 void insere_na_pilha(Carro* c,char novoModelo[TAM_STRING_MEDIO],char novoNumeroDoChassi[TAM_STRING_GRANDE],char novaCor[TAM_STRING_PEQUENO]){
 	ListaCarros *novoCarro = (ListaCarros *) malloc(sizeof(ListaCarros));
 	strcpy(novoCarro->Modelo,novoModelo);
@@ -462,6 +470,7 @@ void insere_na_pilha(Carro* c,char novoModelo[TAM_STRING_MEDIO],char novoNumeroD
 	c->primeiro = novoCarro;
 }
 
+//remove um carro do estoque
 void retira_da_pilha(Carro* c){
 	ListaCarros * l;
 	int TAM = TAM_STRING_MEDIO + TAM_STRING_GRANDE + 14;
@@ -479,6 +488,7 @@ void retira_da_pilha(Carro* c){
 	}
 }
 
+//libera a memória alocada para manipular a lista(pilha) de carros
 void libera_pilha(Carro* c){
 	ListaCarros * l = c->primeiro;
 	while(l != NULL){
@@ -489,12 +499,13 @@ void libera_pilha(Carro* c){
 	free(c);
 }
 
+//mostra a lista dos carros em estoque
 void imprime_pilha(Carro* c){
 	ListaCarros * l;
+	printf("\n-----Lista de carros-----\n\n");
 	if(c->primeiro == NULL){
 		printf("\nNão há veiculos cadastrados.\n\n");
-	}else{
-		printf("\n-----Lista de carros-----\n\n");
+	}else{	
 		for(l = c->primeiro; l != NULL; l = l->proximo){
 			printf("%s | %s | %s\n",l->Modelo,l->NumeroDoChassi,l->Cor);
 		}
@@ -502,6 +513,7 @@ void imprime_pilha(Carro* c){
 	}
 }
 
+//mostra ao usuário a tela inicial ao usuário
 void imprime_menu_principal(){
 	limpa_tela();
 	printf("\n[1] - Cadastrar Clientes\n");
@@ -513,6 +525,7 @@ void imprime_menu_principal(){
 	printf("[7] - Sair\n");
 }
 
+//função auxiliar para limpar a tela quando o usuário navega entre elas
 void limpa_tela(){
 	system("clear || cls");
 }
