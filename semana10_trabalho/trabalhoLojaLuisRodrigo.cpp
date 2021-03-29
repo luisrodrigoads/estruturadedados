@@ -79,6 +79,8 @@ main(){
 	
 	int opcao;
 	
+	char voltar[1];
+	
 	Clientes* filaDeClientes;// = criaFila();
 	Carro* listaDeCarros;// = criaPilha();
 	
@@ -109,13 +111,21 @@ main(){
 				
 				insere_na_fila(filaDeClientes,nome,cpf,telefone);
 				salva_clientes_no_arquivo(filaDeClientes);
-				system("pause");
-				break;
+				
+				fflush(stdin);
+				printf("Para voltar digite qualquer letra ");
+				scanf("%s",voltar);
+				if(voltar != NULL)
+					break;
 			case 2:		//Visualizar clientes
 				limpa_tela();
 				imprime_fila(filaDeClientes);
-				system("pause");
-				break;
+				
+				fflush(stdin);
+				printf("Para voltar digite qualquer letra ");
+				scanf("%s",voltar);
+				if(voltar != NULL)	
+					break;
 			case 3:		//Cadastrar carro no estoque
 				limpa_tela();
 				fflush(stdin);
@@ -131,13 +141,21 @@ main(){
 				
 				insere_na_pilha(listaDeCarros,modelo,numeroDoChassi,cor);
 				salva_carros_no_arquivo(listaDeCarros);
-				system("pause");
-				break;
+				
+				fflush(stdin);
+				printf("Para voltar digite qualquer letra ");
+				scanf("%s",voltar);
+				if(voltar != NULL)
+					break;
 			case 4:		//Visualizar carros no estoque
 				limpa_tela();
 				imprime_pilha(listaDeCarros);
-				system("pause");
-				break;
+
+				fflush(stdin);
+				printf("Para voltar digite qualquer letra ");
+				scanf("%s",voltar);
+				if(voltar != NULL)
+					break;
 			case 5:		//Entregar carro/cliente
 				limpa_tela();
 				if((filaDeClientes->inicial == NULL) || (listaDeCarros->primeiro == NULL)){
@@ -150,13 +168,21 @@ main(){
 					salva_clientes_no_arquivo(filaDeClientes);
 					salva_carros_no_arquivo(listaDeCarros);	
 				}
-				system("pause");
-				break;
+				
+				fflush(stdin);
+				printf("Para voltar digite qualquer letra ");
+				scanf("%s",voltar);
+				if(voltar != NULL)
+					break;
 			case 6:		//Gerar arquivo de clientes ordenado(nome)
 				limpa_tela();
 				organiza_fila(filaDeClientes);
-				system("pause");
-				break;
+				
+				fflush(stdin);
+				printf("Para voltar digite qualquer letra ");
+				scanf("%s",voltar);
+				if(voltar != NULL)
+					break;
 			default:	//Sair
 				break;
 		}
@@ -343,6 +369,8 @@ void organiza_fila(Clientes* cf){
 		}
 		
 		gerar_arquivo_ordenado_clientes(filaAuxiliar);
+	}else{
+		printf("\nNão clientes cadastrados para ordenar.\n");
 	}
 }
 
@@ -369,6 +397,7 @@ void imprime_fila(Clientes* cf){
 	if(cf->inicial == NULL){
 		printf("Não há clientes cadastrados.\n\n");
 	}else{
+		printf("Nome\t| CPF\t| Telefone\n--------------------------\n");
 		for(a = cf->inicial; a != NULL; a = a->proximo){
 			printf("%s | %s | %s\n",a->Nome,a->CPF,a->Telefone);
 		}
@@ -505,7 +534,8 @@ void imprime_pilha(Carro* c){
 	printf("\n-----Lista de carros-----\n\n");
 	if(c->primeiro == NULL){
 		printf("\nNão há veiculos cadastrados.\n\n");
-	}else{	
+	}else{
+		printf("Modelo\t| Numero do chassi\t| Cor\n--------------------------\n");	
 		for(l = c->primeiro; l != NULL; l = l->proximo){
 			printf("%s | %s | %s\n",l->Modelo,l->NumeroDoChassi,l->Cor);
 		}
@@ -516,12 +546,13 @@ void imprime_pilha(Carro* c){
 //mostra ao usuário a tela inicial ao usuário
 void imprime_menu_principal(){
 	limpa_tela();
-	printf("\n[1] - Cadastrar Clientes\n");
+	printf("\n------- Institute Veículos -------\n\n");
+	printf("[1] - Cadastrar Clientes\n");
 	printf("[2] - Visualizar Clientes\n");
 	printf("[3] - Cadastrar Carro no Estoque\n");
 	printf("[4] - Visualizar Carros no Estoque\n");
 	printf("[5] - Entregar Carro/Cliente\n");
-	printf("[6] - Gerar arquivo de Clientes Ordenado por nome\n");
+	printf("[6] - Gerar arquivo de Clientes Ordenado (Nome)\n");
 	printf("[7] - Sair\n");
 }
 
