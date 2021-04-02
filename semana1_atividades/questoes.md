@@ -1,20 +1,20 @@
 
-##Atividade 1
+## Atividade 1
 
 Faça um programa que leia um nome qualquer e armazene em um arquivo
 demoninado “dados.txt”.
 
-##Atividade 2
+## Atividade 2
 
 Faça um programa que leia uma nome qualquer, uma
 idade qualquer e armazena em um arquivo
 demonnado dados2.txt.
 
-##Atividade 3
+## Atividade 3
 
 Faça um programa que leia um arquivo e mostre seu conteúdo na tela.
 
-##Atividade 4
+## Atividade 4
 
 Faça um programa que crie um array de inteiros com
 1000 posições.
@@ -27,7 +27,7 @@ arquivo.
 Ao executar novamente o programa, este deverá ler os
 valores e mostrar na tela os valores informados anteriormente.
 
-##Desafio
+## Desafio
 
 Faça um programa que conte o número de palavras no arquivo.
 
